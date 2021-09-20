@@ -14323,8 +14323,8 @@ Two drawbacks of this model:</p>
 </tr>
 <tr>
 <td>$(e_1 e_2)$</td>
-<td>$W(e_1) + W(e_2) + W([\hbox{Eval}(e_2)/x]e_3) + 1$</td>
-<td>$S(e_1) + S(e_2) + S([\hbox{Eval}(e_2)/x]e_3) + 1$</td>
+<td>$W(e_1) + W(e_2) + W([\hbox{Eval}(e_2)/x]e_1) + 1$</td>
+<td>$S(e_1) + S(e_2) + S([\hbox{Eval}(e_2)/x]e_1) + 1$</td>
 </tr>
 <tr>
 <td><code>let val</code> $x=e_1$ <code>in</code> $e_2$ <code>end</code></td>
@@ -14356,7 +14356,7 @@ $S(e_1 || e_2) = 1 + \max(S(e_1), S(e_2))$</p>
 </div></div></section></section><section><section>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="function-application:-$e_1-e_2$">function application: $e_1 e_2$<a class="anchor-link" href="#function-application:-$e_1-e_2$">&#182;</a></h2><p>$W(e_1 e_2) = W(e_1) + W(e_2) + W([\hbox{Eval}(e_2)/x]e_3) + 1$</p>
+<h2 id="function-application:-$e_1-e_2$">function application: $e_1 e_2$<a class="anchor-link" href="#function-application:-$e_1-e_2$">&#182;</a></h2><p>$W(e_1 e_2) = W(e_1) + W(e_2) + W([\hbox{Eval}(e_2)/x]e_1) + 1$</p>
 <ul>
 <li>$\hbox{Eval}(e)$ evaluates $e$ and returns resulting value</li>
 <li>$[v/x]e$: replace all free (unbound) occurrences of $x$ in $e$ with value $v$ <ul>
@@ -14378,37 +14378,51 @@ $e_1 e_2$</p>
 <li>substitute $v$ for $x$ in $f(x)$</li>
 <li>run $f(v)$</li>
 </ol>
-<p>We assume $\hbox{Eval}(e_2) = \hbox{lambda} \: x \: . \: e_3$</p>
-<p>$[\hbox{Eval}(e_2)/x]e_3$: all free occurrences of $x$ in $e_3$ are replaced with $\hbox{Eval}(e_2)$</p>
+<p>We assume $\hbox{Eval}(e_2) = \hbox{lambda} \: x \: . \: e_2$</p>
+<p>$[\hbox{Eval}(e_2)/x]e_1$: all free occurrences of $x$ in $e_1$ are replaced with $\hbox{Eval}(e_2)$</p>
 
 </div>
 </div></div></section></section><section><section>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Example</p>
+<p>Defs:</p>
+<p>$W(e_1 e_2) = W(e_1) + W(e_2) + W([\hbox{Eval}(e_2)/x]e_1) + 1$</p>
+<p>$\hbox{Eval}(e_2) = \hbox{lambda} \: x \: . \: e_2$</p>
+<p>$W(\mathtt{lambda}\:p\:.\:e) = 1$</p>
 <p><br></p>
+<p>Example</p>
 <p>$f(x) = \mathtt{lambda} \: x \: . \: x + 1$</p>
 <p><br></p>
 <p>$W(f(x)(1)) =$</p>
-<p>$W(f(x)) + W(1) + W([1 / x](x + 1)) + 1 =$  (by definition of $W(e_1 e_2)$)</p>
-<p>$W(f(x)) + W(1) + ( W(1) + W(x+1) + 1 ) + 1 =$  (by definition of $W(e_1 e_2)$)</p>
-<p>$1 + 1 + 1 + 1 + 1 =$</p>
-<p>$5$</p>
-<p><br>
-$S(f(x)(1)) = 5$</p>
 
 </div>
-</div></section></section><section><section>
+</div><div class="fragment">
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>$W(\mathtt{lambda} \: x \: . \: x + 1) + W(1) + W([\hbox{Eval}(1) / x](x + 1)) + 1 =$</p>
+
+</div>
+</div></div><div class="fragment">
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>$W(\mathtt{lambda} \: x \: . \: x + 1) + W(1) + ( W(\hbox{lambda} \: x \: . \: 1) + W(x+1) + 1 ) + 1 =$</p>
+<p>$1 + 1 + 1 + 1 + 1 + 1 =$</p>
+<p>$6$</p>
+<p><br>
+$S(f(x)(1)) = 6$</p>
+
+</div>
+</div></div></section></section><section><section>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p><strong>serial composition:</strong></p>
 <p>$W(f(x)(1), f(x)(2)) = $</p>
 <p>$W(f(x)(1)) + W(f(x)(2)) + 1 = $</p>
-<p>$5 + 5 + 1 = 11$</p>
+<p>$6 + 6 + 1 = 12$</p>
 <p><br></p>
 <p>$S(f(x)(1), f(x)(2)) = $</p>
 <p>$S(f(x)(1)) + S(f(x)(2)) + 1 = $</p>
-<p>$5 + 5 + 1 = 11$</p>
+<p>$6 + 6 + 1 = 12$</p>
 
 </div>
 </div></section></section><section><section>
@@ -14417,17 +14431,17 @@ $S(f(x)(1)) = 5$</p>
 <p><strong>parallel composition:</strong></p>
 <p>$W(f(x)(1) || f(x)(2)) = $</p>
 <p>$W(f(x)(1)) + W(f(x)(2)) + 1 =$</p>
-<p>$5 + 5 + 1 = 11$</p>
+<p>$6 + 6 + 1 = 11$</p>
 <p><br></p>
 <p>$S(f(x)(1) ||  f(x)(2)) = $</p>
 <p>$\max(S(f(x)(1)), S(f(x)(2))) + 1 =$</p>
-<p>$\max(5,5) + 1 = 6$</p>
+<p>$\max(6,6) + 1 = 7$</p>
 
 </div>
 </div></section></section><section><section><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">e1</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">10</span>
@@ -14452,7 +14466,7 @@ $S(f(x)(1)) = 5$</p>
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[9]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[1]:</div>
 
 
 
@@ -14506,7 +14520,7 @@ $$<p><br><br>
 To increase parallelism, we can either:</p>
 <ul>
 <li>decrease span</li>
-<li>increasing work (but that's not really desireable, since we want the overall cost to be low)</li>
+<li>increase work (but that's not really desireable, since we want the overall cost to be low)</li>
 </ul>
 <p><br></p>
 <p><strong>work efficiency</strong>: a parallel algorithm is <em>work efficient</em> if it performs asymptotically the same work as the best known sequential algorithm for the problem.</p>
