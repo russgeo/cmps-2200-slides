@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
 
-<title>01-recurrences slides</title><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>03-recurrences slides</title><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 
 <!-- General and theme style sheets -->
 <link rel="stylesheet" href="https://unpkg.com/reveal.js@4.0.2/dist/reveal.css">
@@ -14099,34 +14099,60 @@ div.jp-OutputPrompt {
 <div class="slides"><section><section>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="CMPS-2200">CMPS 2200<a class="anchor-link" href="#CMPS-2200">&#182;</a></h1><h1 id="Introduction-to-Algorithms">Introduction to Algorithms<a class="anchor-link" href="#Introduction-to-Algorithms">&#182;</a></h1><h2 id="Recurrences---Intro-&amp;-the-Tree-Method">Recurrences - Intro &amp; the Tree Method<a class="anchor-link" href="#Recurrences---Intro-&amp;-the-Tree-Method">&#182;</a></h2>
+<h1 id="CMPS-2200">CMPS 2200<a class="anchor-link" href="#CMPS-2200">&#182;</a></h1><h1 id="Introduction-to-Algorithms">Introduction to Algorithms<a class="anchor-link" href="#Introduction-to-Algorithms">&#182;</a></h1><h2 id="Recurrences---Example-Recursive-Algorithm">Recurrences - Example Recursive Algorithm<a class="anchor-link" href="#Recurrences---Example-Recursive-Algorithm">&#182;</a></h2>
 </div>
 </div></section></section><section><section>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Recurrences are a way to capture the behavior of recursive algorithms.</p>
-<p>Key ingredients:</p>
+<h3 id="Summary-of-last-lecture">Summary of last lecture<a class="anchor-link" href="#Summary-of-last-lecture">&#182;</a></h3><p><strong>Brick method:</strong></p>
 <ul>
-<li>Base case ($n = c$): constant time </li>
-<li>Inductive case ($n &gt; c$): recurse on smaller instance and use output to compute solution</li>
+<li><strong>Root dominated</strong>: cost <em>decreases</em> geometrically as we descend the tree<ul>
+<li>$W(n) \in O(\hbox{root})$</li>
+<li>e.g., $W(n) = 2 W(\frac{n}{2}) + n^2$</li>
 </ul>
-<p>Actually recursion is a conceptual way to view algorithm execution, and we can reframe an algorithm specification to make it recursive.</p>
+</li>
+</ul>
+<ul>
+<li><strong>Leaf dominated</strong>: cost <em>increases</em> geometrically as we descend the tree<ul>
+<li>$W(n) \in O(\hbox{leaves})$</li>
+<li>e.g., $W(n) = 2 W(\frac{n}{2}) + \sqrt{n}$</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Balanced</strong>: neither of the above is true<ul>
+<li>$W(n) \in O(\hbox{(num levels)*(max cost at any level)})$</li>
+<li>e.g., $W(n) = W(n-1) + n \in O(n^2)$</li>
+<li>e.g., $W(n) = 2 W(\frac{n}{2}) + n \in O(n \lg n)$</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div></section></section><section><section>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="Integer-multiplication">Integer multiplication<a class="anchor-link" href="#Integer-multiplication">&#182;</a></h3><p>Now that we've come up with a general technique for solving recurrences, let's look at a recursive algorithm. You learned this algorithm in elementary school for integer multiplication:</p>
+<ul>
+<li><p>Input: $n$ bit integers $x= \langle x_{n-1}, \ldots, x_0\rangle$ and $y = \langle y_{n-1}, \ldots, y_0\rangle$</p>
+</li>
+<li><p>Output: $x \cdot y$</p>
+</li>
+<li><p>Example: '1001'$\times$'1101'</p>
+</li>
+</ul>
 
 </div>
 </div></section></section><section><section><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">selection_sort</span><span class="p">(</span><span class="n">L</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">L</span><span class="p">)):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">L</span><span class="p">)</span>
-        <span class="n">m</span> <span class="o">=</span> <span class="n">L</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">L</span><span class="p">[</span><span class="n">i</span><span class="p">:]))</span>
-        <span class="n">L</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">L</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="n">L</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="n">L</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">L</span>
-                   
-<span class="n">selection_sort</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">9</span><span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">int2binary</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{0:b}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+ 
+<span class="n">int2binary</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14142,29 +14168,13 @@ div.jp-OutputPrompt {
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2, 1, 4, 3, 9]
-[1, 2, 4, 3, 9]
-[1, 2, 4, 3, 9]
-[1, 2, 3, 4, 9]
-[1, 2, 3, 4, 9]
-</pre>
-</div>
-</div>
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[2]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[5]:</div>
 
 
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>[1, 2, 3, 4, 9]</pre>
+<pre>[&#39;1&#39;, &#39;0&#39;, &#39;0&#39;, &#39;1&#39;]</pre>
 </div>
 
 </div>
@@ -14173,22 +14183,16 @@ div.jp-OutputPrompt {
 
 </div>
 
-</div></section><section><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+</div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">selection_sort_recursive</span><span class="p">(</span><span class="n">L</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;L=</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">L</span><span class="p">)</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">L</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="k">return</span><span class="p">(</span><span class="n">L</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">m</span> <span class="o">=</span> <span class="n">L</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">L</span><span class="p">))</span>
-        <span class="n">L</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">L</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="n">L</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="n">L</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">L</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">+</span> <span class="n">selection_sort_recursive</span><span class="p">(</span><span class="n">L</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
-    
-<span class="n">selection_sort_recursive</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">999</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">nine</span> <span class="o">=</span> <span class="n">int2binary</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">nine</span><span class="p">)</span>
+<span class="n">thirteen</span> <span class="o">=</span> <span class="n">int2binary</span><span class="p">(</span><span class="mi">13</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">thirteen</span><span class="p">)</span>  
 </pre></div>
 
      </div>
@@ -14208,25 +14212,62 @@ div.jp-OutputPrompt {
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>L=[2, 1, 999, 4, 3]
-L=[2, 999, 4, 3]
-L=[999, 4, 3]
-L=[4, 999]
-L=[999]
+<pre>[&#39;1&#39;, &#39;0&#39;, &#39;0&#39;, &#39;1&#39;]
+[&#39;1&#39;, &#39;1&#39;, &#39;0&#39;, &#39;1&#39;]
 </pre>
 </div>
 </div>
 
+</div>
+
+</div>
+
+</div></div><div class="fragment">
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+
+<pre><code>       1001   
+     x 1101   
+     ======
+       1001   
+      0000    
+     1001     
+  + 1001      
+  =========
+    1110101   (117)</code></pre>
+
+</div>
+</div></div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">binary2int</span><span class="p">(</span><span class="n">n</span><span class="p">):</span> 
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">binary2int</span><span class="p">(</span><span class="s1">&#39;1110101&#39;</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[3]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[7]:</div>
 
 
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>[1, 2, 3, 4, 999]</pre>
+<pre>117</pre>
 </div>
 
 </div>
@@ -14235,249 +14276,148 @@ L=[999]
 
 </div>
 
-</div></section></section><section><section>
+</div></div><div class="fragment">
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Are these the same algorithm? Can we give a SPARC specification?</p>
-
-</div>
-</div><div class="fragment">
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p><span class="math display">\[\begin{array}{l}  
-\mathit{selectionsort}~~L = 
-\\  
-~~~~~\texttt{if}~|L| = 1~\texttt{then}    
-\\  
-~~~~~~~~~~~~~\texttt{return}~~L  
-\\  
-~~~~~~~~~\texttt{else}
-\\
-~~~~~~~~~~~~\texttt{let}\\
-~~~~~~~~~~~~~~~m = \texttt{minimum element in}~~L\\
-~~~~~~~~~~~~\texttt{in}\\ 
-~~~~~~~~~~~~~~~\texttt{Cons}(m, (\mathit{selectionsort~~\langle x | x\in L~~and~~x\neq m \rangle})) 
-\end{array}\]</span></p>
-</div>
-</div></div></section></section><section><section>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>What is the running time and why?</p>
-
-</div>
-</div><div class="fragment">
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>$\begin{eqnarray}
-W(n) &amp;=&amp; W(n-1) + (n - 1) \\
- &amp;=&amp; W(n-2) + (n - 1) + (n - 2) \\
- &amp;=&amp; W(n-3) + (n - 1) + (n - 2) + (n - 3) \\
-&amp;\vdots&amp;
-\end{eqnarray}$</p>
+<p>What is the running time of the "elementary school" algorithm?</p>
 
 </div>
 </div></div><div class="fragment">
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>$\begin{eqnarray}
-W(n) &amp;=&amp; \sum_{i=1}^n i  \\
-&amp;=&amp; \frac{n(n+1)}{2} \\
-&amp;=&amp; \Theta(n^2).
-\end{eqnarray}$</p>
-
-</div>
-</div></div></section></section><section><section>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>The recurrence for Selection Sort is somewhat simple - what if we have multiple recursive calls and split the input? (This is actually what <em>divide-and-conquer</em> algorithms do.)</p>
-<p>We'll look at methods to solve recurrences in order to obtain big-O bounds for recursive algorithms.</p>
-<p>We will:</p>
-<ul>
-<li><p>Get intuition for recurrences by looking the recursion tree.</p>
-</li>
-<li><p>Develop the <strong>brick</strong> method to quickly state asymptotic bounds on a recurrence by looking at the shape of the tree.</p>
-</li>
-</ul>
-
-</div>
-</div></section></section><section><section>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Let's look at the specification and recurrence for Merge Sort:</p>
-<p><span class="math display">\[\begin{array}{l}  
-\mathit{mergeSort}~a =  
-\\   
-~~~~\texttt{if}~|a| \leq 1~\texttt{then}  
-\\   
-~~~~~~~~a  
-\\  
-~~~~\texttt{else}  
-\\   
-~~~~~~~~\texttt{let}  
-\\  
-~~~~~~~~~~~~(l,r) = \mathit{splitMid}~a  
-\\   
-~~~~~~~~~~~~(l',r') = (\mathit{mergeSort}~l \mid\mid{} \mathit{mergeSort}~r)  
-\\  
-~~~~~~~~\texttt{in}  
-\\   
-~~~~~~~~~~~~\mathit{merge} (l',r')  
-\\  
-~~~~~~~~\texttt{end}  
-\end{array}\]</span></p><p>Suppose that the merging step can be done with $O(n)$ work and $O(\log n)$ span. Then recurrence for the work is:</p>
-<p>$ \begin{equation}
-W(n) = \begin{cases}
-  c_b, &amp; \text{if $n=1$} \\
-  2W(n/2) + c_1n + c_2, &amp; \text{otherwise} 
-  \end{cases}
-\end{equation}$</p>
-<p>How do we solve this recurrence to obtain $W(n) = O(n\log n)$?</p>
-
-</div>
-</div></section></section><section><section>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p><img src="figures/mergesort_tree.png" alt="alttext"></p>
-<p>The recursion tree for Merge Sort has linear work at every level except at the leaves. There are a logarithmic number of levels and a linear number of leaves so we obtain an asymptotic bound of $O(n\log n)$ for the work.</p>
-
-</div>
-</div></section></section><section><section>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Solving-Recurrences-with-the-Tree-Method">Solving Recurrences with the Tree Method<a class="anchor-link" href="#Solving-Recurrences-with-the-Tree-Method">&#182;</a></h2><p><br></p>
-<div>size at level $i$</div> <div style="text-align: right"> cost at level $i$ </div><p><img src="figures/merge-tree.jpg" alt="merge-tree" width="75%"/></p>
-
-</div>
-</div></section></section><section><section>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Recipe:">Recipe:<a class="anchor-link" href="#Recipe:">&#182;</a></h3><ol>
-<li>Expand tree for two levels.</li>
-<li>Determine the cost of each level $i$ ($i$ starts at $0$).</li>
-<li>Determine the number of levels</li>
-<li>Cost = $\sum_{i=0}^{\hbox{num levels}}$ cost for level $i$<ul>
-<li>This last step usually involves using properties of series</li>
-</ul>
-</li>
-</ol>
-<p><br></p>
-
-</div>
-</div><div class="fragment">
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>E.g., for merge sort:</p>
-<ul>
-<li>level $i$ contains $2^i$ nodes</li>
-<li>each node at level $i$ costs $c_1 \frac{n}{2^i} + c_2$</li>
-<li>so, each level costs $2^i * (c_1 \frac{n}{2^i} + c_2) = c_1n + 2^i c_2$</li>
-<li>since each level reduces size by half, we have $\lg n$ levels</li>
-<li>so, total cost of tree is:</li>
-</ul>
-$$W(n) = \sum_{i=0}^{\lg n} (c_1n + 2^i c_2)$$
-</div>
-</div></div></section><section>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-$$W(n) = \sum_{i=0}^{\lg n} (c_1n + 2^i c_2)$$<blockquote><p>To solve this, we'll make use of bounds for <strong>geometric series</strong>.</p>
-<ul>
-<li><p>For $\alpha &gt; 1$: $\:\:\: \sum_{i=0}^n \alpha^i  &lt; \frac{\alpha}{\alpha - 1}\cdot\alpha^n$
-<br></p>
-<ul>
-<li>e.g., $\sum_{i=0}^{\lg n} 2^i &lt; \frac{2}{1} * 2^{\lg n} = 2n$</li>
-</ul>
-</li>
-</ul>
-<p><br></p>
-<ul>
-<li><p>For $\alpha &lt; 1$: $\:\:\: \sum_{i=0}^\infty \alpha^i  &lt; \frac{1}{1-\alpha}$
-<br></p>
-<ul>
-<li>e.g., $\sum_{i=0}^{\lg n} \frac{1}{2^i} &lt; 2$</li>
-</ul>
-</li>
-</ul>
+<blockquote><p>For two $n$-digit inputs $O(n^2)$, since for each digit of $x$ we might add a stack of $n$ bits. The total number of bits in the solution is at most $2n$.</p>
 </blockquote>
 
 </div>
+</div></div></section></section><section><section>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>What does this have to do with recursion and recurrences?</p>
+<p>Instead of the elementary school algorithm, consider splitting each $n$-digit input in half. Can we multiply recursively?</p>
+<p>Let $x = \langle x_L, x_R\rangle$, $y = \langle y_L, y_R\rangle$. Then,</p>
+<p>$\begin{align} 
+x &amp;=&amp; 2^{n/2} x_L + x_R \:\:\:\:\:\: \hbox{e.g.} \: 1001:  2^2 (10) + (01)\\
+y &amp;=&amp; 2^{n/2} y_L + y_R \:\:\:\:\:\: \hbox{e.g.} \: 1101:  2^2 (11) + (01)\\
+\end{align}
+$</p>
+<p><br><br></p>
+<p><strong>Wait...Is multiplying by $2^{n/2}$ efficient?</strong></p>
+<p><br><br></p>
+<p>Recall: $2^2 [10] \rightarrow [1000] \:\:$ (shift two places to the left).</p>
+<p><br></p>
+<p>So then,</p>
+<p>$\begin{align}
+x\cdot y &amp;=&amp; (2^{n/2} x_L + x_R)(2^{n/2} y_L + y_R) \\
+ &amp;=&amp; 2^n (x_L \cdot y_L) + 2^{n/2} (x_L \cdot y_R + x_R \cdot y_L) + (x_R \cdot y_R) \\
+\end{align}
+$</p>
+<p><br></p>
+<p>We've converted one multiplication of sizes $(n,n)$ into four multiplications of size $(\frac{n}{2}, \frac{n}{2})$.</p>
+<p>What recursive algorithm, and recurrence is suggested by this observation?</p>
+
+</div>
 </div><div class="fragment">
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p><br> plugging in...</p>
-$$= \sum_{i=0}^{\lg n} (c_1 n + 2^i c_2)$$$$= \sum_{i=0}^{\lg n}c_1 n + \sum_{i=0}^{\lg n} 2^i c_2$$$$= c_1n \sum_{i=0}^{\lg n} 1 + c_2 \sum_{i=0}^{\lg n} 2^i$$$$&lt;c_1n \lg n + 2 c_2 n$$$$\in O(n \lg n)$$
+<blockquote><p>$W(n) = 4W(n/2) + cn$</p>
+</blockquote>
+<p>What is the solution to this recurrence using the brick method? Is it root-dominated, or leaf-dominated?</p>
+
 </div>
 </div></div></section></section><section><section>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>What about the span?</p>
-<p><img src="figures/tree.png" alt="tree"></p>
-
-</div>
-</div></section></section><section><section>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>The recurrence for the span of Mergesort is:</p>
-<p>$ \begin{equation}
-S(n) = \begin{cases}
-  c_3, &amp; \text{if $n=1$} \\
-  S(n/2) + c_4 \lg n, &amp; \text{otherwise} 
-  \end{cases}
-\end{equation}$</p>
-<p>Since each level of the recursion tree is concurrent and all nodes have the same cost, we have that</p>
-<p>$ \begin{align}
-S(n) &amp; = &amp; \sum_{i=1}^{\lg n} \lg\frac{n}{2^i}\\
-&amp; = &amp; \sum_{i=1}^{\lg n} (\lg n - i)\\
-&amp; = &amp; \sum_{i=1}^{\lg n} (\lg n) - \sum_{i=1}^{\lg n} i\\
-&amp; &lt; &amp; \lg^2 n  - \frac{1}{2}\lg n * (\lg n+1) \:\: (\hbox{using}\:\:\sum_{i=1}^n = \frac{n(n+1)}{2})\\
-&amp; = &amp; \lg^2n - \frac{1}{2}\lg^2 n - \frac{1}{2}  \lg n\\
-&amp; = &amp; O(\lg^2 n)\\
-\end{align}$</p>
-
-</div>
-</div></section></section><section><section>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Another recurrence:</p>
-<p>$ \begin{equation}
-W(n) = \begin{cases}
-  c_b, &amp; \text{if $n=1$} \\
-  2W(n/2) + n^2, &amp; \text{otherwise} 
-  \end{cases}
-\end{equation}$</p>
-<p>What is the asymptotic runtime?</p>
-<p><img src="figures/tree.png" alt="tree" width="50%"/></p>
-
-</div>
-</div></section></section><section><section>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-$$W(n) = 2W(n/2) + c_1n^2 + c_2$$<p><img width="50%" src="figures/n_squared.png"/></p>
-<p>$= \sum_i^{\lg n} (c_1 \frac{n^2}{2^i} + 2^i c_2)$</p>
-<p>$= c_1 n^2 \sum_{i=0}^{\lg n} \frac{1}{2^i} + c_2 \sum_{i=0}^{\lg n} 2^i$</p>
-<p>$&lt; 2 c_1 n^2 + 2 c_2 n$</p>
-<p>$\in O(n^2)$</p>
-
-</div>
-</div></section></section><section><section>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>So what if branching factor is not 2?</p>
-$$W(n) = 4 W \Big(\frac{n}{2}\Big) + O(n)$$<p><strong>costs</strong></p>
-<ul>
-<li>level 0: $c_1n + c_2$</li>
-<li>level 1: $4(c_1 \frac{n}{2} + c_2)$</li>
-<li>level 2: $16(c_1 \frac{n}{4} + c_2)$</li>
-<li>level $i$ ?</li>
-</ul>
-
-</div>
-</div></section><section>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-$$4^i(c_1 \frac{n}{2^i} + c_2)$$<p><br></p>
-<p>still $\lg n$ levels:, so $W(n)$ is:</p>
+<h3 id="work-of-recursive-multiplication">work of recursive multiplication<a class="anchor-link" href="#work-of-recursive-multiplication">&#182;</a></h3><p>$C(\hbox{root}) = n$</p>
+<p>$C(\hbox{level}\:1) = 4(\frac{n}{2})= 2 \cdot n$</p>
+<p>geometrically <strong>increasing</strong> as we descend the recurrence tree.</p>
+<p>A recurrence is <strong>leaf-dominated</strong> if for all $v$, there is an $\alpha &gt; 1$ such that:</p>
+$$C(v) \leq \frac{1}{\alpha} \sum_{u \in D(v)} C(u)$$<p>let $\alpha \leftarrow 2$</p>
+<p>$n \le \frac{1}{2}\cdot 2 \cdot n$</p>
 <p><br></p>
-$$= c_1n \sum_{i=0}^{\lg n} \Big(\frac{4}{2}\Big)^i + c_2 \sum_{i=0}^{\lg n} 4^i$$$$&lt; 2 c_1 n^2 + \frac{4}{3} c_2 4^{\lg n}$$$$(\hbox{since} \:\:\ \sum_{i=0}^n \alpha^i  &lt; \frac{\alpha}{\alpha - 1}\cdot\alpha^n)$$$$= 2 c_1 n^2 + \frac{4}{3} c_2 2^{\lg n} 2^{\lg n}$$$$= 2 c_1 n^2 + \frac{4}{3} c_2 n^2$$$$\in O(n^2)$$
+<p>The cost of a leaf dominated recurrence is $O(L)$, where $L$ is the number of leaves.</p>
+<h3 id="how-many-leaf-nodes-are-there?">how many leaf nodes are there?<a class="anchor-link" href="#how-many-leaf-nodes-are-there?">&#182;</a></h3><p><br><br><br></p>
+<p>nodes per level: $1, 4, 64, \ldots 4^i \ldots 4^{\lg n}=(2\cdot2)^{\lg n}=n\cdot n = n^2$</p>
+<blockquote><p>This is a leaf-dominated reucrrence that is $O(n^2)$ -- the same as the elementary school algorithm!</p>
+</blockquote>
+<p>Now, what is the span of this algorithm if implemented in parallel?</p>
+
+</div>
+</div></section></section><section><section>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="span-of-recursive-multiplication">span of recursive multiplication<a class="anchor-link" href="#span-of-recursive-multiplication">&#182;</a></h3><p>Assuming each multiplication can be done in parallel, and that addition has span $O(n)$, we get that</p>
+$$S(n) = S(n/2) + cn$$<p></p>
+<p>which yields a span of ...</p>
+<p><br><br><br><br></p>
+<p><strong>brick method</strong></p>
+<p>$S(\hbox{root})=n$</p>
+<p>$S(\hbox{level 1}) = \frac{n}{2}$</p>
+<p>$\rightarrow$ <strong>root dominated</strong></p>
+<p>$S(n) \in O(n)$. This is much better than the span of the grade school algorithm, which is $O(n^2)$!</p>
+<p><br></p>
+<p><strong>What parallelism is achieved?</strong></p>
+<p><br></p>
+<p>Parallelism $= \frac{W}{S} = \frac{n^2}{n} = n$</p>
+<p>Can we do any better?</p>
+
+</div>
+</div></section></section><section><section>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="recursive-multiplication-with-less-work">recursive multiplication with less work<a class="anchor-link" href="#recursive-multiplication-with-less-work">&#182;</a></h3><p>Recall that</p>
+<p>$\begin{align}
+x\cdot y &amp;=&amp; (2^{n/2} x_L + x_R)(2^{n/2} y_L + y_R) \\
+ &amp;=&amp; 2^n (x_L \cdot y_L) + 2^{n/2} (x_L \cdot y_R + x_R \cdot y_L) + (x_R \cdot y_R) \\
+\end{align}
+$</p>
+<p><br></p>
+<p>Can we reduce this from 4 multiplications to 3??</p>
+<p><br><br><br><br></p>
+<p>Observation:</p>
+<p>$\begin{align} 
+(x_L + x_R)\cdot (y_L + y_R) &amp;=&amp; (x_L\cdot y_L) + (x_L\cdot y_R) + (x_R\cdot y_L) + (x_R\cdot y_R)\\
+\end{align}
+$</p>
+<p>$\begin{align}
+(x_L\cdot y_R) + (x_R\cdot y_L) = (x_L + x_R)\cdot (y_L + y_R) - (x_L\cdot y_L) - (x_R\cdot y_R)\\
+\end{align}$</p>
+<p>How does our observation help us?</p>
+
+</div>
+</div><div class="fragment">
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>If we calculate $(x_L\cdot y_L)$, $(x_R\cdot y_R)$, and $(x_L + x_R)\cdot (y_L + y_R)$, that is <em>three</em> recursive multiplications.</p>
+<p>So with 3 recursive multiplications and two more "additions", we then get that $W(n) = 3W(n/2) + dn$. What is the running time?</p>
+
+</div>
+</div></div></section></section><section><section>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="work-of-$W(n)-=-3W(n/2)-+-dn$">work of $W(n) = 3W(n/2) + dn$<a class="anchor-link" href="#work-of-$W(n)-=-3W(n/2)-+-dn$">&#182;</a></h3><p><strong>brick method</strong></p>
+<p>$C(\hbox{root}) = n$</p>
+<p>$C(\hbox{level 1}) = \frac{3n}{2}$</p>
+<p><br><br><br><br></p>
+<p>$\frac{3}{2} &gt; 1 \Rightarrow$ <strong>leaf dominated</strong>.</p>
+<p>But, there are fewer leaves this time. Why?</p>
+<p><br><br><br><br></p>
+<p>nodes per level: $1, 3, 9, \ldots 3^i \ldots 3^{\lg n}=n^{\lg 3} \:\:\:\: (\hbox{by}\: a^{\log_b c} = c^{\log_b a})$</p>
+<p><br><br></p>
+<p>Using the brick method, this is still a leaf-dominated recurrence, and thus the running time is $O(n^{\log_2 3}) \:\: $ (approximately $O(n^{1.58}$) versus of $O(n^2)$ earlier).</p>
+<p><br></p>
+<p>This is known as the <a href="https://en.wikipedia.org/wiki/Karatsuba_algorithm"><strong>Karatsaba-Ofman</strong></a> algorithm (1962), and is the earliest known divide-and-conquer algorithm for integer multiplication. It is actually implemented in Intel hardware!</p>
+<p><br><br></p>
+<p>So, our we've decreased work from $O(n^2)$ to $O(n^{\log_2 3})$.</p>
+<p>Span stays the same: $O(n)\:\:$  Why?</p>
+<p><br><br></p>
+<p>Parallelism $= \frac{W}{S} = \frac{n^{\log_2 3}}{n} \approx n^{.58} &lt; n$</p>
+<p><br></p>
+<p>So, our parallelism went down. Is that good or bad?</p>
+<p><br><br></p>
+<p>Schönhage and Strassen (1971) gave an algorithm that runs in $O(n\log n \log\log n)$ time.</p>
+<p>In 2007, <a href="https://ivv5hpp.uni-muenster.de/u/cl/WS2007-8/mult.pdf">Fürer gave an algorithm</a> that runs in $n \log n 2^{O(\log^* n)}$.</p>
+<p>What is the fastest possible sequential algorithm for integer multiplication? In parallel?</p>
+
 </div>
 </div></section></section>
 </div>
