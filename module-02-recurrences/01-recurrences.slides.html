@@ -41,18 +41,18 @@ if( window.location.search.match( /print-pdf/gi ) ) {
                 tex2jax: {
                     inlineMath: [ ['$','$'], ["\\(","\\)"] ],
                     displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-                    processEscapes: true,
+                    processEscapes: false,
                     processEnvironments: true
                 },
                 displayAlign: 'center',
                 CommonHTML: {
                     linebreaks: { 
-                    automatic: true 
+                    automatic: false 
                     }
                 },
                 "HTML-CSS": {
                     linebreaks: { 
-                    automatic: true 
+                    automatic: false 
                     }
                 }
             });
@@ -14269,9 +14269,9 @@ L=[999]
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>$\begin{eqnarray}
-W(n) &amp;=&amp; W(n-1) + (n - 1) \\
- &amp;=&amp; W(n-2) + (n - 1) + (n - 2) \\
- &amp;=&amp; W(n-3) + (n - 1) + (n - 2) + (n - 3) \\
+W(n) &amp;=&amp; W(n-1) + n \\
+ &amp;=&amp; W(n-2) + n + (n - 1) \\
+ &amp;=&amp; W(n-3) + n + (n - 1) + (n - 2) \\
 &amp;\vdots&amp;
 \end{eqnarray}$</p>
 
@@ -14376,7 +14376,7 @@ W(n) = \begin{cases}
 </ul>
 $$W(n) = \sum_{i=0}^{\lg n} (c_1n + 2^i c_2)$$
 </div>
-</div></div></section><section>
+</div></div></section></section><section><section>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 $$W(n) = \sum_{i=0}^{\lg n} (c_1n + 2^i c_2)$$<blockquote><p>To solve this, we'll make use of bounds for <strong>geometric series</strong>.</p>
@@ -14400,13 +14400,13 @@ $$W(n) = \sum_{i=0}^{\lg n} (c_1n + 2^i c_2)$$<blockquote><p>To solve this, we'l
 </blockquote>
 
 </div>
-</div><div class="fragment">
+</div></section><section>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p><br> plugging in...</p>
 $$= \sum_{i=0}^{\lg n} (c_1 n + 2^i c_2)$$$$= \sum_{i=0}^{\lg n}c_1 n + \sum_{i=0}^{\lg n} 2^i c_2$$$$= c_1n \sum_{i=0}^{\lg n} 1 + c_2 \sum_{i=0}^{\lg n} 2^i$$$$&lt;c_1n \lg n + 2 c_2 n$$$$\in O(n \lg n)$$
 </div>
-</div></div></section></section><section><section>
+</div></section></section><section><section>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>What about the span?</p>
@@ -14437,7 +14437,31 @@ S(n) &amp; = &amp; \sum_{i=1}^{\lg n} \lg\frac{n}{2^i}\\
 </div></section></section><section><section>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Another recurrence:</p>
+<h3 id="Divide-and-Conquer">Divide and Conquer<a class="anchor-link" href="#Divide-and-Conquer">&#182;</a></h3><p>Merge Sort is a divide-and-conquer algorithm.</p>
+<p>A divide-and-conquer algorithm, at each step, divides the problem into subproblems, solves each, then combines the results to arrive at the final solution.</p>
+<p>Recurrences can easily be written and interpretted from the perspective of divide and conquer algorithms.</p>
+
+</div>
+</div><div class="fragment">
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>$ \begin{equation}
+W(n) = \begin{cases}
+  c_b, &amp; \text{if $n=1$} \\
+  aW(\frac{n}{b}) + f(n), &amp; \text{otherwise} 
+  \end{cases}
+\end{equation}$</p>
+<ul>
+<li>$a$ is the branching factor.</li>
+<li>$\frac{n}{b}$ gives us the sub-problem size at the next level.</li>
+<li>$f(n)$ is the cost of the combining step.</li>
+</ul>
+
+</div>
+</div></div></section></section><section><section>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="More-Practice">More Practice<a class="anchor-link" href="#More-Practice">&#182;</a></h3><p>Another recurrence:</p>
 <p>$ \begin{equation}
 W(n) = \begin{cases}
   c_b, &amp; \text{if $n=1$} \\
