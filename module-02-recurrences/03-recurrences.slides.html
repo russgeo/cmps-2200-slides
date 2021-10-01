@@ -14132,7 +14132,36 @@ div.jp-OutputPrompt {
 </div></section></section><section><section>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Integer-multiplication">Integer multiplication<a class="anchor-link" href="#Integer-multiplication">&#182;</a></h3><p>Now that we've come up with a general technique for solving recurrences, let's look at a recursive algorithm. You learned this algorithm in elementary school for integer multiplication:</p>
+<h3 id="Divide-and-Conquer">Divide and Conquer<a class="anchor-link" href="#Divide-and-Conquer">&#182;</a></h3><p>Even though we haven't explicitly given it a name, many of the algorithms we've been discussing are divide-and-conquer algorithms</p>
+<ul>
+<li>Split Sum</li>
+<li>Merge Sort</li>
+<li>Longest Sum Recursive</li>
+</ul>
+<p>A divide-and-conquer algorithm, at each step, divides the problem into subproblems, solves each, then combines the results to arrive at the final solution.</p>
+<p>Recurrences can easily be written and interpretted from the perspective of divide and conquer algorithms.</p>
+
+</div>
+</div></section><section>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>$ \begin{equation}
+W(n) = \begin{cases}
+  c_b, &amp; \text{if $n=1$} \\
+  aW(\frac{n}{b}) + f(n), &amp; \text{otherwise} 
+  \end{cases}
+\end{equation}$</p>
+<ul>
+<li>$a$ is the branching factor.</li>
+<li>$\frac{n}{b}$ gives us the sub-problem size at the next level.</li>
+<li>$f(n)$ is the cost of the combining step.</li>
+</ul>
+
+</div>
+</div></section></section><section><section>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="Integer-multiplication">Integer multiplication<a class="anchor-link" href="#Integer-multiplication">&#182;</a></h3><p>Now that we've come up with a general technique for expressing and solving recurrences, let's look at a recursive algorithm. You learned this algorithm in elementary school for integer multiplication:</p>
 <ul>
 <li><p>Input: $n$ bit integers $x= \langle x_{n-1}, \ldots, x_0\rangle$ and $y = \langle y_{n-1}, \ldots, y_0\rangle$</p>
 </li>
